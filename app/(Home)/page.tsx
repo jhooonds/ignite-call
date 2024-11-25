@@ -1,5 +1,6 @@
+
 import Image from "next/image";
-import app_preview from '../../../public/app-preview.png'
+import app_preview from '../../public/app-preview.png'
 import ClaimUserNameForm from "./component/claimUserNameForm";
 
 

@@ -6,13 +6,13 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useSearchParams } from "next/navigation"; // Correção no import
-import { api } from "../_lib/axios";
 import { AxiosError } from "axios";
 import { useRouter } from 'next/navigation'
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import MultiStepForm from "./_components/muiltStepForm";
+import { api } from "@/lib/axios";
 
 const registerFormSchema = z.object({
   username: z
@@ -55,12 +55,12 @@ export default function Register() {
         username: data.username
      })
      router.push('/register/connect-calendar')
-   } catch (error) {
-    if(error instanceof AxiosError && error?.response?.data?.message) {
-      alert(error.response.data.message)
+   } catch (err) {
+    if(err instanceof AxiosError && err?.response?.data?.message) {
+      alert(err.response.data.message)
       return
     }
-    console.log(error)
+    console.log(err)
    }
   }
 
