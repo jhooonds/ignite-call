@@ -2,11 +2,7 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import { Toaster } from "@/components/ui/sonner";
-import { Providers } from "./providers/sessionProvider";
-
-
-
+import { SessionProvider } from 'next-auth/react';
 
 const roboto = Roboto({
   weight: ["400", "500", "700"],
@@ -34,8 +30,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-           <Providers>{children}</Providers>
-            <Toaster />
+          <SessionProvider>{children}</SessionProvider>
           </ThemeProvider>
       </body>
     </html>

@@ -1,19 +1,17 @@
 'use client'
 
-
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Check } from 'lucide-react';
-import { signIn, useSession } from 'next-auth/react'
+import { signIn, useSession, SessionProvider  } from 'next-auth/react'
 import MultiStepForm from '../_components/muiltStepForm';
 
-
 export default function ConnectCalendar() {
-  const session = useSession()
+  const session = useSession();
 
   const searchParams = new URLSearchParams(window.location.search);
   const hasAuthError = !!searchParams.get("error");
 
-  const isSignedIn = session.status === 'authenticated'
+  const isSignedIn = session?.status === 'authenticated'
 
   async function handleConnectionCalendar() {
     await signIn('google')

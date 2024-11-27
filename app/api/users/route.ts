@@ -2,10 +2,12 @@
 
 import { prisma } from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
-import { cookies } from 'next/headers'; // Importação necessária para manipular cookies
+import { cookies } from 'next/headers'; 
 
-export async function POST(req: NextRequest) {
-  const cookiesStore = await cookies(); // Agora você pode usar cookiesStore para setar cookies
+export async function POST(req: NextRequest, res: NextResponse ) {
+
+  const cookieStore = await cookies();
+ 
   try {
     const { name, username } = await req.json();
 
@@ -20,15 +22,21 @@ export async function POST(req: NextRequest) {
     }
 
     const user = await prisma.user.create({
-      data: { name, username },
+      data: { name, username }, 
     });
 
     const response = NextResponse.json({ success: true, user });
 
-    cookiesStore.set('@ignitecall:userId', user.id, {
-      maxAge: 60 * 60 * 24 * 7, 
+    response.cookies.set('@ignitecall:userId', user.id, {
+      maxAge: 60 * 60 * 24 * 7, // 7 dias
       path: '/',
     });
+      // setCookie({ res: response }, '@ignitecall:userId', user.id, {
+      //   maxAge: 60 * 60 * 24 * 7, // 7 dias
+      //   path: '/',
+      // });
+
+    console.log(response)
 
     return response;
   } catch (error) {
