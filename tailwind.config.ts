@@ -9,6 +9,20 @@ export default {
   ],
   theme: {
   	extend: {
+			keyframes: {
+				slideIn: {
+					from: { transform: '-translate-y-full' },
+					to: { transform: 'translate-y-0' }
+				},
+				slideOut: {
+					from: { transform: 'translate-y-0' },
+					to: { transform: '-translate-y-full' }
+				},
+			},
+			animation: {
+				slideIn: 'slideIn 2s ease-out',
+				slideOut: 'slideOut 2s ease-in'
+			},
   		colors: {
 			white: '#FFF',
 			black: '#000',
