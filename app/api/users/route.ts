@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers'; 
 
-export async function POST(req: NextRequest, res: NextResponse ) {
+export async function POST( req: NextRequest, res: NextResponse ) {
 
   const cookieStore = await cookies();
  
@@ -44,3 +44,4 @@ export async function POST(req: NextRequest, res: NextResponse ) {
     return NextResponse.json({ success: false, error: 'Erro ao criar usuário' }, { status: 500 });
   }
 }
+
