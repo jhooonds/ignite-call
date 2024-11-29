@@ -7,16 +7,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import MultiStepForm from "../_components/muiltStepForm";
-import Image from "next/image";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
+import { useSession } from "next-auth/react";
 
 const updateProfileSchema = z.object({})
 
 type UpdateProfileFormData = z.infer<typeof updateProfileSchema>;
 
-export default function UpdateProfile() {
+export default  function UpdateProfile() {
   const {
     register,
     handleSubmit,
@@ -24,10 +23,11 @@ export default function UpdateProfile() {
   } = useForm<UpdateProfileFormData>({
     resolver: zodResolver(updateProfileSchema),
   });
+
+  const { data: session } = useSession()
+  console.log(session)
  
-  async function handleUpdateProfile(data: UpdateProfileFormData) {
-  
-   }
+  async function handleUpdateProfile(data: UpdateProfileFormData) {}
 
   return (
     <div className="max-w-[35.75rem] mt-20 mx-auto mb-1 px-4">
@@ -45,11 +45,10 @@ export default function UpdateProfile() {
         <div className=" mt-4 flex flex-col gap-2">
             <Label className="flex flex-col gap-4 text-gray100">Foto de perfil</Label>
             <Avatar className="w-16 h-16 mt-2">
-                <AvatarImage  src="https://github.com/shadcn.png" />
+                <AvatarImage  src={session?.user?.avatar_url} />
                 <AvatarFallback>CN</AvatarFallback>
             </Avatar>
 
-           
         </div>
         <div className="flex flex-col gap-4">
             <Label className="flex flex-col gap-4  text-gray100" htmlFor="message">Sobre você</Label>
