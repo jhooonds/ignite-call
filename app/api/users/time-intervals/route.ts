@@ -6,14 +6,17 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from "zod";
 
 const timeIntervalBodySchema = z.object({
-  intervals: z.array(
-    z.object({
-      weekDay: z.number(),
-      startTimeInMinutes: z.number(),
-      endTimeInMinutes: z.number(),
-    })
-  ),
+  intervals: z.object({
+    intervals: z.array(
+      z.object({
+        weekDay: z.number(),
+        startTimeInMinutes: z.number(),
+        endTimeInMinutes: z.number(),
+      })
+    ),
+  }),
 });
+
 
 export async function POST(req: NextRequest, res: NextResponse) {
   const session = await auth();
@@ -25,21 +28,26 @@ export async function POST(req: NextRequest, res: NextResponse) {
     );
   }
 
-  const parsedBody = timeIntervalBodySchema.parse(await req.json());
-  const { intervals } = parsedBody;
+  const body = await req.json()
 
-  const result = await Promise.all(
-    intervals.map((interval) => {
-      return prisma.userTimeInterval.create({
+  const parsedBody = timeIntervalBodySchema.parse(body);
+
+  const intervals = parsedBody.intervals.intervals;
+  console.log(intervals)
+
+
+  await Promise.all(
+    intervals.map((interval) =>
+      prisma.userTimeInterval.create({
         data: {
           week_day: interval.weekDay,
           time_start_in_minutes: interval.startTimeInMinutes,
           time_end_in_minutes: interval.endTimeInMinutes,
           user_id: session.user.id!,
         },
-      });
-    })
+      })
+    )
   );
 
-  return NextResponse.json({ success: true, data: result, status: 201 });
+  return NextResponse.json({ success: true }, { status: 201 });
 }
