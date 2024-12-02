@@ -10,8 +10,13 @@ import MultiStepForm from "../_components/muiltStepForm";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSession } from "next-auth/react";
+import { api } from "@/lib/axios";
+import { useRouter } from "next/navigation";
 
-const updateProfileSchema = z.object({})
+
+const updateProfileSchema = z.object({
+  bio: z.string()
+})
 
 type UpdateProfileFormData = z.infer<typeof updateProfileSchema>;
 
@@ -19,15 +24,21 @@ export default  function UpdateProfile() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
   } = useForm<UpdateProfileFormData>({
     resolver: zodResolver(updateProfileSchema),
   });
-
+  
+  const router = useRouter()
   const { data: session } = useSession()
-  console.log(session)
  
-  async function handleUpdateProfile(data: UpdateProfileFormData) {}
+  async function handleUpdateProfile(data: UpdateProfileFormData) {
+    await api.put('/users/profile-update', {
+      bio: data.bio
+    })
+
+    await router.push(`/schedule/${session?.user.username}`)
+  }
 
   return (
     <div className="max-w-[35.75rem] mt-20 mx-auto mb-1 px-4">
@@ -52,7 +63,7 @@ export default  function UpdateProfile() {
         </div>
         <div className="flex flex-col gap-4">
             <Label className="flex flex-col gap-4  text-gray100" htmlFor="message">Sobre você</Label>
-            <Textarea className="h-32 bg-gray-950 border border-gray-500" id="message"/>
+            <Textarea {...register('bio')} className="h-32 bg-gray-950 border border-gray-500" id="message"/>
             <p className="text-sm text-gray200">Fale um pouco sobre você. Isto será exibido em sua página pessoal.</p>
         </div>
 

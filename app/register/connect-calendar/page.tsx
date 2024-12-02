@@ -4,9 +4,11 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, Check } from 'lucide-react';
 import { signIn, useSession, SessionProvider  } from 'next-auth/react'
 import MultiStepForm from '../_components/muiltStepForm';
+import { useRouter } from 'next/navigation';
 
 export default function ConnectCalendar() {
   const session = useSession();
+  const router = useRouter()
 
   const searchParams = new URLSearchParams(window.location.search);
   const hasAuthError = !!searchParams.get("error");
@@ -15,6 +17,10 @@ export default function ConnectCalendar() {
 
   async function handleConnectionCalendar() {
     await signIn('google')
+  }
+
+  async function handleNavigateToNextStep() {
+    await router.push('/register/time-intervals')
   }
 
   return (
@@ -55,6 +61,7 @@ export default function ConnectCalendar() {
           </span>
         )}
         <Button
+         onClick={handleNavigateToNextStep}
           className="bg-green-800 text-white hover:bg-green-500"
           type="submit"
           disabled={!isSignedIn}
