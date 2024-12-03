@@ -14,7 +14,7 @@ import { getWeekDays } from "@/utils/get-week-days";
 export function Calendar() {
     const shortWeekDays = getWeekDays({ short: true });
     return (
-        <div className="flex flex-col gap-6 p-6 bg-gray800 rounded-md">
+        <div className="flex flex-col gap-6 p-6 bg-gray800 rounded-md w-[33.75rem]">
             {/* Header Calendar */}
             <div className="flex items-center justify-between">
                 <div className="flex items-center justify-between gap-4">
