@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma' // Ajuste o caminho do prisma se necessário
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { notFound } from 'next/navigation'
-import { ScheduleForm } from './scheduleForm/confirmStep/page'
+import { ScheduleForm } from './scheduleForm/page'
 
 interface SchedulePageProps {
   params: {
