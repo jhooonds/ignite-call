@@ -15,8 +15,7 @@ export function CalendarStep() {
                  <div className="font-medium text-gray100">
                     Terça-feira, <span className="text-gray-200 text-sm">20 de setembro</span>
                  </div>
-
-                 <div className="mt-3 grid gap-2 grid-cols-1 sm:grid-cols-2"> </div>
+                 <div className="mt-3 grid gap-2 grid-cols-1 sm:grid-cols-2">  </div>
                </div>               
             )}
         </div>

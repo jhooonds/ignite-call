@@ -1,3 +1,5 @@
+'use client'
+
 import { ChevronLeft, ChevronRight, Ghost } from "lucide-react";
 import { Button } from "../ui/button";
 
@@ -10,16 +12,26 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { getWeekDays } from "@/utils/get-week-days";
+import { useState } from "react";
+import dayjs from "dayjs";
 
 export function Calendar() {
+    const [currentDate, setCurrentDate] = useState(() => {
+        return dayjs().set('date',1)
+    })
     const shortWeekDays = getWeekDays({ short: true });
+
+    const currentMonth = currentDate.format('MMMM')
+    const currentYear = currentDate.format('YYYY')
+
+
     return (
         <div className="flex flex-col gap-6 p-6 bg-gray800 rounded-md w-[33.75rem]">
             {/* Header Calendar */}
             <div className="flex items-center justify-between">
                 <div className="flex items-center justify-between gap-4">
-                    <h3 className="leading-normal">Dezembro</h3>
-                    <span className="text-gray200">2024</span>
+                    <h3 className="leading-normal">{currentMonth}</h3>
+                    <span className="text-gray200">{currentYear}</span>
                 </div>
                 {/* Calendar actions */}
                 <div className="flex gap-2 text-gray200">
