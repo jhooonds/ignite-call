@@ -4,6 +4,8 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SessionProvider } from 'next-auth/react';
 
+import '../lib/dayjs'
+
 const roboto = Roboto({
   weight: ["400", "500", "700"],
   style: ["normal", "italic"],
