@@ -3,15 +3,15 @@ import dayjs from 'dayjs';
 import { NextRequest, NextResponse } from 'next/server';
 
 
-export async function GET(req: NextRequest, res: NextResponse) {
+export async function GET(req: NextRequest, res: NextResponse, { params }: { params: { username: string}}) {
     
     if(req.method !== 'GET') {
         return NextResponse.json({ message: 'Method Not Allowed' }, { status: 405 });
     }
  
-    const searchParams = req.nextUrl.searchParams;
-    const username = searchParams.get('username')  || undefined
-    const date = searchParams.get('date')
+    const { searchParams } = req.nextUrl;
+    const username = req.nextUrl.pathname.split('/')[3]; // Obtém o username da URL
+    const date = searchParams.get('date');
 
     if(!date) {
         return NextResponse.json({ message: 'Date not provided.'}, { status: 400 })
@@ -58,7 +58,28 @@ export async function GET(req: NextRequest, res: NextResponse) {
    const possibleTimes = Array.from({ length:endtHour - startHour }).map((_,i) => {
     return startHour + i
    })
-   
 
-   return NextResponse.json( possibleTimes )
+   //greater than or equal
+
+   const blockedTimes = await prisma.scheduling.findMany({
+    select: {
+        date: true,
+    },
+    where: {
+        user_id: user.id,
+        date: {
+            gte: referenceDate.set('hour', startHour).toDate(),
+            lte: referenceDate.set('hour', endtHour).toDate()
+        },
+    }
+   })
+
+   const avaibleTimes = possibleTimes.filter((time) => {
+        return !blockedTimes.some((blockedTime) => blockedTime.date.getHours() === time,
+    
+    )
+   })
+   // [8, 9, 10]
+
+   return NextResponse.json({ possibleTimes, avaibleTimes })
 }
