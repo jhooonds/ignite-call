@@ -6,6 +6,10 @@ import { cookies } from 'next/headers';
 
 export async function POST( req: NextRequest, res: NextResponse ) {
 
+  if(req.method !== 'POST') {
+    return NextResponse.json({ message: 'Method Not Allowed' }, { status: 405 });
+  }
+
   const cookieStore = await cookies();
  
   try {

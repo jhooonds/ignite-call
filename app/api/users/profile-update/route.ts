@@ -5,11 +5,19 @@ import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from "zod";
 
+
+
 const updateProfileBodySchema = z.object({
     bio: z.string()
 })
 
 export async function PUT(req: NextRequest, res: NextResponse) {
+  
+  if(req.method !== 'PUT') {
+    return NextResponse.json({ message: 'Method Not Allowed' }, { status: 405 });
+  }
+
+
   const session = await auth();
 
   if (!session?.user) {
