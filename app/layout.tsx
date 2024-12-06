@@ -5,6 +5,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { SessionProvider } from 'next-auth/react';
 
 import '../lib/dayjs'
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "@/lib/react-query";
 
 const roboto = Roboto({
   weight: ["400", "500", "700"],
@@ -24,6 +26,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    <QueryClientProvider client={queryClient}>
     <html lang="en" suppressHydrationWarning>
      <body className={`${roboto.className} antialiased overflow-hidden`}>
         <ThemeProvider
@@ -36,5 +39,6 @@ export default function RootLayout({
           </ThemeProvider>
       </body>
     </html>
+    </QueryClientProvider>
   );
 }
